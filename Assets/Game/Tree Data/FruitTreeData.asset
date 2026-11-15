@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194e8dd38b934d84a7b031d272a6828d, type: 3}
   m_Name: FruitTreeData
   m_EditorClassIdentifier: 
-  treeName: "\u041E\u0431\u044B\u0447\u043D\u043E\u0435 \u0434\u0435\u0440\u0435\u0432\u043E"
+  treeName: FruitTree
   maxHealth: 100
-  woodPrefab: {fileID: 0}
+  woodPrefab: {fileID: 5361428799875542787, guid: c31bf8ec8e29cd74f9fb9a970fde7a53, type: 3}
   minWoodAmount: 2
   maxWoodAmount: 4
-  stumpPrefab: {fileID: 0}
+  stumpPrefab: {fileID: 7098389285256826050, guid: fb070a2d31206d9499ecc8a77be0ebf0, type: 3}
