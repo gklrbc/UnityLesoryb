@@ -45,6 +45,11 @@ public class InputService : IInputService, IInitializable, IDisposable
     private void OnUse(InputAction.CallbackContext context)
     {
         _isUsing = context.ReadValueAsButton();
+
+        if (context.started)
+        {
+            UseToolPressed?.Invoke();
+        }
     }
 
     private void OnLook(InputAction.CallbackContext context)
