@@ -1,3 +1,4 @@
+using Game.Scripts.Gameplay;
 using Game.Scripts.Gameplay.Views;
 using UnityEngine;
 using Zenject;
@@ -11,6 +12,7 @@ public class GameplayInstaller : MonoInstaller<GameplayInstaller>
     {
         BindCharacterView();
         BindCharacterMover();
+        BindCharacterAxeUse();
     }
 
     private void BindCharacterView()
@@ -27,6 +29,14 @@ public class GameplayInstaller : MonoInstaller<GameplayInstaller>
     {
         Container
             .BindInterfacesAndSelfTo<CharacterMover>()
+            .AsSingle()
+            .NonLazy();
+    }
+
+    private void BindCharacterAxeUse()
+    {
+        Container
+            .BindInterfacesAndSelfTo<CharacterAxeUse>()
             .AsSingle()
             .NonLazy();
     }
