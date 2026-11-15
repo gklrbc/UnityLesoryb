@@ -9,5 +9,7 @@ namespace Game.Scripts.Core
         event Action JumpPressed;
         event Action UseToolPressed;
         public event Action<Vector2> LookPerformed;
+
+
     }
 }

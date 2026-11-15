@@ -18,10 +18,6 @@ public class InputService : IInputService, IInitializable, IDisposable
     public Vector2 Direction => _direction;
     public bool IsUsing => _isUsing;
 
-    public void Initialize()
-    {
-        SubscribeToEvents();
-    }
 
     private void SubscribeToEvents()
     {
@@ -73,4 +69,11 @@ public class InputService : IInputService, IInitializable, IDisposable
     {
         UnsubscribeFromEvents();
     }
+
+    public void Initialize()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        SubscribeToEvents();
+    }
+
 }

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Game.Scripts.Core;
 using Game.Scripts.Gameplay.Views;
 using UnityEngine;
@@ -11,9 +13,11 @@ public class CharacterMover : ITickable
     private float _maxSpeed;
     private float _jumpSpeed;
     private float _sensitivity;
+    private float _maxVerticalAngle;
 
     private Vector3 _velocity;
     private float _gravity = 9.81f;
+    private float _currentVerticalAngle;
 
     public CharacterMover(IInputService input, CharacterView characterView)
     {
@@ -23,6 +27,7 @@ public class CharacterMover : ITickable
         _maxSpeed = _characterView.MaxSpeed;
         _jumpSpeed = _characterView.JumpSpeed;
         _sensitivity = _characterView.Sensitivity;
+        _maxVerticalAngle = _characterView.MaxVerticalAngle;
 
         _input.JumpPressed += Jump;
         _input.LookPerformed += Rotate;
@@ -38,12 +43,20 @@ public class CharacterMover : ITickable
 
     private void Move()
     {
+        _velocity = _characterView.transform.TransformDirection(_velocity);
         _characterView.CharacterController.Move(_velocity * Time.deltaTime);
     }
 
-    private void Rotate(Vector2 lookDelta)
+    private void Rotate(Vector2 mouseInput)
     {
-        _characterView.CharacterController.transform.Rotate(0f, lookDelta.x * _sensitivity, 0f);
+        float rotationY = mouseInput.x * _sensitivity * Time.deltaTime;
+        _characterView.transform.rotation *= Quaternion.Euler(0, rotationY, 0);
+
+        float rotationX = mouseInput.y * _sensitivity * Time.deltaTime;
+        _currentVerticalAngle -= rotationX;
+
+        _currentVerticalAngle = Mathf.Clamp(_currentVerticalAngle, -_maxVerticalAngle, _maxVerticalAngle);
+        _characterView.Head.localEulerAngles = new Vector3(_currentVerticalAngle, 0, 0);
     }
 
     private void ChangeVelocity()
@@ -51,11 +64,10 @@ public class CharacterMover : ITickable
         if (_characterView.CharacterController.isGrounded == false)
             _velocity.y -= _gravity * Time.deltaTime;
 
-        Vector3 direction = new Vector3(_input.Direction.x, 0f, _input.Direction.y);
-        direction = _characterView.CharacterController.transform.TransformDirection(direction);
+        Vector2 direction = _input.Direction;
 
         _velocity.x = direction.x * _maxSpeed;
-        _velocity.z = direction.z * _maxSpeed;
+        _velocity.z = direction.y * _maxSpeed;
     }
 
     public void Tick()
